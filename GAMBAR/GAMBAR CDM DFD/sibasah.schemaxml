@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemadesigner version="6.5">
+<source>
+<database charset="utf8mb4" collation="utf8mb4_general_ci">sibasah</database>
+</source>
+<canvas zoom="100">
+<tables>
+<table name="tb_detail_transaksi" view="colnames">
+<left>822</left>
+<top>14</top>
+<width>153</width>
+<height>180</height>
+<sql_create_table>CREATE TABLE `tb_detail_transaksi` (
+  `id_detail_transaksi` int(11) NOT NULL AUTO_INCREMENT,
+  `id_transaksi` varchar(10) NOT NULL,
+  `id_sampah` varchar(10) DEFAULT NULL,
+  `berat_sampah` double DEFAULT NULL,
+  `harga` double DEFAULT NULL,
+  `total_transaksi` double DEFAULT NULL,
+  PRIMARY KEY (`id_detail_transaksi`),
+  KEY `id_transaksi` (`id_transaksi`),
+  KEY `id_sampah` (`id_sampah`),
+  CONSTRAINT `tb_detail_transaksi_ibfk_2` FOREIGN KEY (`id_transaksi`) REFERENCES `tb_transaksi` (`id_transaksi`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `tb_detail_transaksi_ibfk_3` FOREIGN KEY (`id_sampah`) REFERENCES `tb_sampah` (`id`) ON DELETE CASCADE ON UPDATE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=415 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="tb_kategori" view="colnames">
+<left>819</left>
+<top>266</top>
+<width>127</width>
+<height>129</height>
+<sql_create_table>CREATE TABLE `tb_kategori` (
+  `id_kategori` varchar(10) NOT NULL,
+  `jenis_kategori` varchar(50) NOT NULL,
+  `satuan` varchar(50) NOT NULL,
+  PRIMARY KEY (`id_kategori`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="tb_login" view="colnames">
+<left>430</left>
+<top>293</top>
+<width>111</width>
+<height>180</height>
+<sql_create_table>CREATE TABLE `tb_login` (
+  `id_login` varchar(10) NOT NULL,
+  `id_nasabah` varchar(10) DEFAULT NULL,
+  `id_petugas` varchar(10) DEFAULT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `akses` varchar(7) NOT NULL,
+  PRIMARY KEY (`id_login`),
+  KEY `id_nasabah` (`id_nasabah`),
+  KEY `id_petugas` (`id_petugas`),
+  CONSTRAINT `tb_login_ibfk_1` FOREIGN KEY (`id_nasabah`) REFERENCES `tb_nasabah` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `tb_login_ibfk_2` FOREIGN KEY (`id_petugas`) REFERENCES `tb_petugas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="tb_nasabah" view="colnames">
+<left>176</left>
+<top>271</top>
+<width>125</width>
+<height>248</height>
+<sql_create_table>CREATE TABLE `tb_nasabah` (
+  `id` varchar(10) NOT NULL,
+  `no_rekening` varchar(10) DEFAULT NULL,
+  `id_login` varchar(10) DEFAULT NULL,
+  `nama` varchar(50) NOT NULL,
+  `jenis_kelamin` varchar(10) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `hp` varchar(13) NOT NULL,
+  `alamat` varchar(255) NOT NULL,
+  `status` varchar(11) NOT NULL,
+  `tanggal_buat` date DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_login` (`id_login`),
+  KEY `id_rekening` (`no_rekening`),
+  CONSTRAINT `tb_nasabah_ibfk_2` FOREIGN KEY (`no_rekening`) REFERENCES `tb_rekening` (`id_rekening`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `tb_nasabah_ibfk_3` FOREIGN KEY (`id_login`) REFERENCES `tb_login` (`id_login`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="tb_petugas" view="colnames">
+<left>644</left>
+<top>285</top>
+<width>125</width>
+<height>214</height>
+<sql_create_table>CREATE TABLE `tb_petugas` (
+  `id` varchar(10) NOT NULL,
+  `id_login` varchar(10) DEFAULT NULL,
+  `nama` varchar(50) NOT NULL,
+  `jenis_kelamin` varchar(10) NOT NULL,
+  `hp` varchar(13) NOT NULL,
+  `alamat` varchar(255) NOT NULL,
+  `status` varchar(11) NOT NULL,
+  `tanggal_buat` date DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_login` (`id_login`),
+  CONSTRAINT `tb_petugas_ibfk_1` FOREIGN KEY (`id_login`) REFERENCES `tb_login` (`id_login`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="tb_rekening" view="colnames">
+<left>21</left>
+<top>56</top>
+<width>133</width>
+<height>129</height>
+<sql_create_table>CREATE TABLE `tb_rekening` (
+  `id_rekening` varchar(10) NOT NULL,
+  `id_nasabah` varchar(10) DEFAULT NULL,
+  `saldo_rekening` int(11) NOT NULL,
+  PRIMARY KEY (`id_rekening`),
+  KEY `id_nasabah` (`id_nasabah`),
+  CONSTRAINT `tb_rekening_ibfk_1` FOREIGN KEY (`id_nasabah`) REFERENCES `tb_nasabah` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="tb_sampah" view="colnames">
+<left>999</left>
+<top>250</top>
+<width>131</width>
+<height>163</height>
+<sql_create_table>CREATE TABLE `tb_sampah` (
+  `id` varchar(10) NOT NULL,
+  `id_kategori` varchar(10) NOT NULL,
+  `nama_sampah` varchar(50) NOT NULL,
+  `harga_sampah` int(11) DEFAULT NULL,
+  `keterangan` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_kategori` (`id_kategori`),
+  CONSTRAINT `tb_sampah_ibfk_1` FOREIGN KEY (`id_kategori`) REFERENCES `tb_kategori` (`id_kategori`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="tb_transaksi" view="colnames">
+<left>428</left>
+<top>34</top>
+<width>147</width>
+<height>214</height>
+<sql_create_table>CREATE TABLE `tb_transaksi` (
+  `id_transaksi` varchar(10) NOT NULL,
+  `tanggal_transaksi` date DEFAULT NULL,
+  `tipe_transaksi` varchar(10) NOT NULL,
+  `id_nasabah` varchar(10) NOT NULL,
+  `id_rekening` varchar(10) NOT NULL,
+  `id_petugas` varchar(10) NOT NULL,
+  `total_setoran` double NOT NULL,
+  `total_penarikan` double NOT NULL,
+  PRIMARY KEY (`id_transaksi`),
+  KEY `id_nasabah` (`id_nasabah`),
+  KEY `id_rekening` (`id_rekening`),
+  KEY `id_petugas` (`id_petugas`),
+  CONSTRAINT `tb_transaksi_ibfk_1` FOREIGN KEY (`id_nasabah`) REFERENCES `tb_nasabah` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `tb_transaksi_ibfk_2` FOREIGN KEY (`id_rekening`) REFERENCES `tb_rekening` (`id_rekening`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `tb_transaksi_ibfk_3` FOREIGN KEY (`id_petugas`) REFERENCES `tb_petugas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+</tables>
+</canvas>
+</schemadesigner>
